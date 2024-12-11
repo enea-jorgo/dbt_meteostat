@@ -1,21 +1,18 @@
 
 version: 2
 
-models:
-    - name: my_first_dbt_model
-      description: "A starter dbt model"
-      columns:
-          - name: id
-            description: "The primary key for this table"
-            tests:
-                - unique
-                - not_null
+version: 2
+sources:
 
-    - name: my_second_dbt_model
-      description: "A starter dbt model"
-      columns:
-          - name: id
-            description: "The primary key for this table"
-            tests:
-                - unique
-                - not_null
+- name: staging_weather
+  schema: s_eneajorgo
+  tables:
+    - name: weather_daily_raw
+    - name: weather_hourly_raw
+
+- name: staging_flights
+  schema: public
+  tables:
+    - name: flights
+    - name: airports
+    - name: regions
