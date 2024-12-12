@@ -1,52 +1,48 @@
-WITH routes AS (
-    SELECT 
-        origin,
-        dest,
-        count(*) AS n_flights_per_route,
-        count(DISTINCT tail_number) AS arr_tail,
-        count(DISTINCT airline) AS nunique_airlines,
-        avg(actual_elapsed_time) AS avg_elapsed_time,
-        avg(arr_delay) AS avg_delay,
-        max(arr_delay) AS max_arr_delay,
-        max(dep_delay) AS max_dep_delay,
-        min(arr_delay) AS min_arr_delay,
-        min(dep_delay) AS min_dep_delay,
-        sum(cancelled) AS cancelled_tot,
-        sum(diverted) AS diverted_tot
-    FROM {{ ref("prep_flights") }}
-    GROUP BY origin, dest
-), 
-routes_join_origin AS (
-    SELECT 
-        r.origin,
-        r.dest,
-        r.n_flights_per_route,
-        r.arr_tail,
-        r.nunique_airlines,
-        r.avg_elapsed_time,
-        r.avg_delay,
-        r.max_arr_delay,
-        r.max_dep_delay,
-        r.min_arr_delay,
-        r.min_dep_delay,
-        r.cancelled_tot,
-        r.diverted_tot,
-        a.city AS origin_city,
-        a.country AS origin_country,
-        a.name AS origin_name
-    FROM routes r
-    JOIN {{ ref("prep_airport") }} a
-    ON r.origin = a.faa
-),
-routes_with_dest AS (
-    SELECT 
-        rjo.*,
-        a.city AS dest_city,
-        a.country AS dest_country,
-        a.name AS dest_name
-    FROM routes_join_origin rjo
-    JOIN {{ ref("prep_airport") }} a
-    ON rjo.dest = a.faa
+WITH stats AS (
+SELECT
+    origin AS faa_o
+    ,dest AS faa_d
+    ,count(*) AS total_flights
+    ,count(DISTINCT tail_number) AS nunique_tail_nr
+    ,count(DISTINCT airline) AS nunique_airline
+    ,avg(actual_elapsed_time_interval) AS avg_elapsed_time
+    ,avg(arr_delay_interval) AS avg_delay
+    ,max(arr_delay_interval) AS max_delay
+    ,min(arr_delay_interval) AS min_delay
+    ,sum(cancelled) AS cancelled_tot
+    ,sum(diverted) AS diverted_tot
+FROM {{ref('prep_flights')}} pf
+GROUP BY origin, dest
 )
-SELECT *
-FROM routes_with_dest;
+select
+    s.faa_o AS origin
+    ,pa_o.city AS origin_city
+    ,pa_o.country AS origin_country
+    ,pa_o.name AS origin_airport
+    ,s.faa_d AS dest
+    ,pa_d.city as dest_city
+    ,pa_d.country AS dest_country
+    ,pa_d.name AS dest_airport
+    ,s.total_flights
+    ,s.nunique_tail_nr
+    ,s.nunique_airline
+    ,s.avg_elapsed_time
+    ,s.avg_delay
+    ,s.max_delay
+    ,s.min_delay
+    ,s.cancelled_tot
+    ,s.diverted_tot
+FROM stats s
+JOIN {{ref('prep_airports')}} pa_o
+  ON faa_o = pa_o.faa
+JOIN {{ref('prep_airports')}} pa_d
+  ON faa_d = pa_d.faa
+
+
+
+
+
+
+
+
+
