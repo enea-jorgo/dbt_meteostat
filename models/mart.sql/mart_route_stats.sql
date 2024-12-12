@@ -33,9 +33,9 @@ select
     ,s.cancelled_tot
     ,s.diverted_tot
 FROM stats s
-JOIN {{ref('prep_airport')}} pa_o
+JOIN {{ref('prep_airports')}} pa_o
   ON faa_o = pa_o.faa
-JOIN {{ref('prep_airport')}} pa_d
+JOIN {{ref('prep_airports')}} pa_d
   ON faa_d = pa_d.faa
 
 
