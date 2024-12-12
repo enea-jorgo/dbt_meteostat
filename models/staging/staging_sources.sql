@@ -1,7 +1,7 @@
 version: 2
 sources:
 - name: staging_weather
-  schema: s_svengiesbrecht
+  schema: s_eneajorgo
   tables:
     - name: weather_daily_raw
     - name: weather_hourly_raw
