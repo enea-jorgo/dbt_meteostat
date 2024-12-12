@@ -20,12 +20,12 @@ WITH routes AS (
      	, a.city AS origin_country
      	, a.name AS origin_name
      	FROM routes r
-    JOIN {ref{"prep_airports"}}
+    JOIN {ref{"prep_airport"}}
     ON r.origin = a.faa
 )
 SELECT *
 FROM routes_join_origin;
-JOIN {ref{"prep_airports"}}
+JOIN {ref{"prep_airport"}}
 on rjo.dest = a.faa
 
 
