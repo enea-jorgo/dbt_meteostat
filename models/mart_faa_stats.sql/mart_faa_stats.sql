@@ -38,5 +38,5 @@ SELECT ap.country
        , ap.name
        , ats.*
 FROM airport_tot_stats ats
-LEFT JOIN {{ref("prep_airports")}}
+LEFT JOIN {{ref("prep_airport")}}
 USING (faa);
