@@ -1,0 +1,13 @@
+version: 2
+sources:
+- name: staging_weather
+  schema: s_svengiesbrecht
+  tables:
+    - name: weather_daily_raw
+    - name: weather_hourly_raw
+- name: staging_flights
+  schema: public
+  tables:
+    - name: flights
+    - name: airports
+    - name: regions
