@@ -7,7 +7,7 @@ WITH departures AS (
            , sum(CASE WHEN cancelled=0 THEN 1 ELSE 0 END) AS dep_occ_tot
            , count(DISTINCT tail_number) AS dep_tail
            , count(DISTINCT airline) AS dep_nunique_airlines
-    FROM {{ref("prep_flight")}}
+    FROM {{ref("prep_flights")}}
     GROUP BY origin
 ), arrivals AS (
     SELECT dest AS faa
@@ -18,7 +18,7 @@ WITH departures AS (
            , sum(CASE WHEN cancelled=0 THEN 1 ELSE 0 END) AS arr_occ_tot
            , count(DISTINCT tail_number) AS arr_tail
            , count(DISTINCT airline) AS arr_nunique_airlines
-    FROM {{ref("prep_flight")}}
+    FROM {{ref("prep_flights")}}
     GROUP BY dest
 ), airport_tot_stats AS (
     SELECT faa
