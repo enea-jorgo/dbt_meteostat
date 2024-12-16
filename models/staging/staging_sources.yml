@@ -5,11 +5,10 @@ sources:
   schema: s_eneajorgo
   tables:
     - name: weather_daily_raw
-    - name: weather_hourly_raw
 
 - name: staging_flights
   schema: public
   tables:
-    - name: flights
+    - name: flights_filtered
     - name: airports
     - name: regions
